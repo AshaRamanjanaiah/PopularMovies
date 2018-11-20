@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="favorites">Favorites</string>
+    <string name="mark_as_favorite">+ MARK AS FAVORITE</string>
+    <string name="unmark_as_favorite">- UNFAVORITE MOVIE</string>
+    <string name="thumbnail_image">Thumbnail Image</string>
+</resources>

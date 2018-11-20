@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="thumbnail_height">300dp</dimen>
+    <dimen name="imagethumbnail_width">150dp</dimen>
+    <dimen name="title_backgroundHeight">129dp</dimen>
+    <dimen name="title_textsize">36sp</dimen>
+    <dimen name="image_thumbnailHeight">180dp</dimen>
+    <dimen name="releasedate_textsize">26sp</dimen>
+    <dimen name="voteAverage_textsize">18sp</dimen>
+    <dimen name="layout_margin">10dp</dimen>
+    <dimen name="markAsFavorite_btn_width">100dp</dimen>
+    <dimen name="review_textsize">16sp</dimen>
+</resources>
