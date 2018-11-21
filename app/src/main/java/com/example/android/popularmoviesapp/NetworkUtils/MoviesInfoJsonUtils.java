@@ -19,12 +19,14 @@ public final class MoviesInfoJsonUtils {
         final String OVERVIEW = "overview";
         final String VOTE_AVERAGE = "vote_average";
         final String RELEASE_DATE = "release_date";
+        final String MOVIE_ID = "id";
 
         String imageThumbnail = "";
         String movieTitle = "";
         String movieOverview = "";
         String movieVoteAverage = "";
         String movieReleaseDate = "";
+        int movieId = 0;
 
         JSONObject jsonObject = new JSONObject(movieJsonData);
 
@@ -39,12 +41,10 @@ public final class MoviesInfoJsonUtils {
                 movieOverview = resultsObject.optString(OVERVIEW);
                 movieVoteAverage = resultsObject.optString(VOTE_AVERAGE);
                 movieReleaseDate = resultsObject.optString(RELEASE_DATE);
+                movieId = resultsObject.optInt(MOVIE_ID);
             }
-            movieData.add(new MovieData(movieTitle, movieVoteAverage, movieReleaseDate, movieOverview, imageThumbnail));
+            movieData.add(new MovieData(movieTitle, movieVoteAverage, movieReleaseDate, movieOverview, imageThumbnail, movieId));
         }
-
-
-
 
         return movieData;
     }

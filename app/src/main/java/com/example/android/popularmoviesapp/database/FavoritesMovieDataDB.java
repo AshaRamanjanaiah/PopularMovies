@@ -13,28 +13,39 @@ public class FavoritesMovieDataDB {
     private String movieVoteAverage;
     private String movieOverview;
     private String imageThumbnail;
+    private int movieId;
     private boolean markedAsFavorite;
 
     @Ignore
     public FavoritesMovieDataDB(String title, String movieReleaseDate, String movieVoteAverage,
-                                String movieOverview, String imageThumbnail, boolean markedAsFavorite){
+                                String movieOverview, String imageThumbnail, int movieId, boolean markedAsFavorite){
         this.title = title;
         this.movieVoteAverage = movieVoteAverage;
         this.movieReleaseDate = movieReleaseDate;
         this.movieOverview = movieOverview;
         this.imageThumbnail = imageThumbnail;
+        this.movieId = movieId;
         this.markedAsFavorite = markedAsFavorite;
     }
 
     public FavoritesMovieDataDB(int id, String title, String movieVoteAverage, String movieReleaseDate,
-                                String movieOverview, String imageThumbnail, boolean markedAsFavorite){
+                                String movieOverview, String imageThumbnail, int movieId, boolean markedAsFavorite){
         this.id = id;
         this.title = title;
         this.movieVoteAverage = movieVoteAverage;
         this.movieReleaseDate = movieReleaseDate;
         this.movieOverview = movieOverview;
         this.imageThumbnail = imageThumbnail;
+        this.movieId = movieId;
         this.markedAsFavorite = markedAsFavorite;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public int getId() {

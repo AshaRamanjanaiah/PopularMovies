@@ -11,13 +11,15 @@ public class MovieData implements Parcelable {
     private String movieVoteAverage;
     private String movieReleaseDate;
     private String movieOverview;
+    private int movieId;
 
-    public MovieData(String title, String movieVoteAverage, String movieReleaseDate, String movieOverview, String imageThumbnail){
+    public MovieData(String title, String movieVoteAverage, String movieReleaseDate, String movieOverview, String imageThumbnail, int movieId){
         this.title = title;
         this.movieVoteAverage = movieVoteAverage;
         this.movieReleaseDate = movieReleaseDate;
         this.movieOverview = movieOverview;
         this.imageThumbnail = imageThumbnail;
+        this.movieId = movieId;
     }
 
     private MovieData(Parcel in){
@@ -26,6 +28,7 @@ public class MovieData implements Parcelable {
         movieReleaseDate = in.readString();
         movieOverview = in.readString();
         imageThumbnail = in.readString();
+        movieId = in.readInt();
     }
 
     public String getImageThumbnail() {
@@ -46,6 +49,10 @@ public class MovieData implements Parcelable {
         return movieOverview;
     }
 
+    public int getMovieId() {
+        return movieId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -58,6 +65,7 @@ public class MovieData implements Parcelable {
         dest.writeString(movieReleaseDate);
         dest.writeString(movieOverview);
         dest.writeString(imageThumbnail);
+        dest.writeInt(movieId);
     }
 
     public static final Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {

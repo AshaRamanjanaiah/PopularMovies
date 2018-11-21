@@ -81,7 +81,7 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
                 Log.d(TAG, "Updating movies from LiveData in viewModel");
                     for (FavoritesMovieDataDB movieData : favoritesMovieDataDBS) {
                         movieDataArrayList.add(new MovieData(movieData.getTitle(), movieData.getMovieVoteAverage(),
-                                movieData.getMovieReleaseDate(), movieData.getMovieOverview(), movieData.getImageThumbnail()));
+                                movieData.getMovieReleaseDate(), movieData.getMovieOverview(), movieData.getImageThumbnail(), movieData.getMovieId()));
                     }
                     imageAdapter.notifyDataSetChanged();
                     sortBy = Constant.FAVORITES;
@@ -127,7 +127,7 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
 
         for (MovieData movieData : movieDataList) {
             movieDataArrayList.add(new MovieData(movieData.getTitle(), movieData.getMovieVoteAverage(),
-                    movieData.getMovieReleaseDate(), movieData.getMovieOverview(),movieData.getImageThumbnail()));
+                    movieData.getMovieReleaseDate(), movieData.getMovieOverview(),movieData.getImageThumbnail(), movieData.getMovieId()));
         }
         imageAdapter.notifyDataSetChanged();
 

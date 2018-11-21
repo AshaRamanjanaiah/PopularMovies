@@ -44,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private String mMovieVoteAverage;
     private String mMovieOverview;
     private String mImageThumbnail;
+    private int mMovieId;
 
     private AppDatabase appDatabase;
 
@@ -129,6 +130,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             mReviewTextview.setText(mMovieOverview);
         }
 
+        if(movieData.getMovieId() != 0) {
+            mMovieId = movieData.getMovieId();
+        }
+
         if(movieData.getImageThumbnail() != null && !movieData.getImageThumbnail().equals("")) {
             mImageThumbnail = movieData.getImageThumbnail();
             Picasso.with(DetailActivity.this)
@@ -159,7 +164,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private void addMovieToDB(){
         mMovieData = new FavoritesMovieDataDB(mMovieTitle,
-                mMovieReleaseDate, mMovieVoteAverage, mMovieOverview, mImageThumbnail, true);
+                mMovieReleaseDate, mMovieVoteAverage, mMovieOverview, mImageThumbnail, mMovieId, true);
         AppExecutor.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
