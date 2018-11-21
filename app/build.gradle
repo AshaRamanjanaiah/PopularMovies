@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", API_KEY)
     }
     buildTypes {
         release {
@@ -34,4 +36,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     implementation  "com.android.support:support-fragment:27.1.1"
+
+    //recyclerView
+    implementation  'com.android.support:recyclerview-v7:27.1.1'
 }

@@ -130,6 +130,7 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
                     movieData.getMovieReleaseDate(), movieData.getMovieOverview(),movieData.getImageThumbnail()));
         }
         imageAdapter.notifyDataSetChanged();
+
     }
 
     private void launchActivity(MovieData movieData){

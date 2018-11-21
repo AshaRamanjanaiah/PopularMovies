@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +50,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private boolean mMarkAsFavorite = false;
     private FavoritesMovieDataDB mMovieData = null;
 
+    private static int LIST_OF_TRAILERS = 3;
+    private TrailerAdapter mTrailerAdapter;
+    private RecyclerView mTrailerRecyclerView;
+
+    private static int LIST_OF_REVIEWS = 3;
+    private ReviewAdapter mReviewAdapter;
+    private RecyclerView mReviewRecycleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +72,27 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mReviewTextview = (TextView) findViewById(R.id.tv_review);
         mMarkAsFavoriteButton = (Button) findViewById(R.id.bt_markAsFavorite);
         mMarkAsFavoriteButton.setOnClickListener(this);
+
+        mTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayout.VERTICAL);
+        mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
+        mTrailerRecyclerView.setHasFixedSize(true);
+        mTrailerRecyclerView.setNestedScrollingEnabled(false);
+        mTrailerAdapter = new TrailerAdapter(LIST_OF_TRAILERS);
+        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
+
+        mReviewRecycleView = (RecyclerView) findViewById(R.id.rv_reviews);
+
+        LinearLayoutManager linearLayoutManagerReview = new LinearLayoutManager(this);
+        linearLayoutManagerReview.setOrientation(LinearLayout.VERTICAL);
+        mReviewRecycleView.setLayoutManager(linearLayoutManagerReview);
+        mReviewRecycleView.setHasFixedSize(true);
+        mReviewRecycleView.setNestedScrollingEnabled(false);
+        mReviewAdapter = new ReviewAdapter(LIST_OF_REVIEWS);
+        mReviewRecycleView.setAdapter(mReviewAdapter);
+
 
         Intent intent = getIntent();
         if(intent.hasExtra(Constant.MOVIE_DATA)){
@@ -162,10 +194,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 if(mMovieData!= null) {
                     mMarkAsFavorite = favoritesMovieData.isMarkedAsFavorite();
                 }
-
+                showFavoriteButton(mMarkAsFavorite);
             }
         });
-        showFavoriteButton(mMarkAsFavorite);
     }
 
     public void showFavoriteButton(boolean mMarkAsFavorite){

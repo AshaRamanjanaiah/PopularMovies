@@ -1,5 +1,7 @@
 package com.example.android.popularmoviesapp.NetworkUtils;
 
+import com.example.android.popularmoviesapp.BuildConfig;
+
 public class Constant {
     public static final String MOVIEDB_URL =
             "http://api.themoviedb.org/3/discover/movie";
@@ -13,7 +15,7 @@ public class Constant {
     public static final String API_KEY = "api_key";
 
     // Use your own API key
-    public static final String api_value = "api_key_value";
+    public static final String api_value = BuildConfig.API_KEY;
 
     public static final String MOST_POPULAR = "mostPopular";
 
