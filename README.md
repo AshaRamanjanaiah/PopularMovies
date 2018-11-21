@@ -39,4 +39,4 @@ Populate all fields in the layout accordingly
 https://github.com/AshaRamanjanaiah/PopularMoviesApp/wiki
 
 ## How to run the app
-Use your own API key In the file NetworkUtils\Constant.java file(update api_value value with your own key).
+Add your own API key in gradle.properties and use BuildConfig property.
