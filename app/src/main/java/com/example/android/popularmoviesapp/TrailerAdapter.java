@@ -1,6 +1,8 @@
 package com.example.android.popularmoviesapp;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,13 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmoviesapp.model.TrailerData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
 
-    private int mTrailerItems;
 
-    public TrailerAdapter(int noOftrailers){
-        mTrailerItems = noOftrailers;
-    }
+    private List<TrailerData> mTrailerDataList = new ArrayList<>();
+
+        public TrailerAdapter(){ }
 
     @NonNull
     @Override
@@ -38,7 +44,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public int getItemCount() {
-        return mTrailerItems;
+
+        if (null == mTrailerDataList) return 0;
+        return mTrailerDataList.size();
     }
 
     class TrailerViewHolder extends RecyclerView.ViewHolder{
@@ -52,10 +60,20 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             mTrailerIcon = (ImageView) itemView.findViewById(R.id.iv_trailer_icon);
             mTrailerTitle = (TextView) itemView.findViewById(R.id.tv_trailer_title);
 
+
+
         }
 
         void bind(int listIndex){
-            mTrailerTitle.setText(String.valueOf(listIndex));
+           String name =  mTrailerDataList.get(listIndex).getName();
+            mTrailerTitle.setText(name);
+
+            String key = mTrailerDataList.get(listIndex).getKey();
         }
+    }
+
+    public void setTrailerDataChanged(List<TrailerData> trailerDataList){
+            mTrailerDataList.addAll(trailerDataList);
+            notifyDataSetChanged();
     }
 }

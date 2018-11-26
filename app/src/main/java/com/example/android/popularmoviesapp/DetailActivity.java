@@ -25,9 +25,15 @@ import com.example.android.popularmoviesapp.NetworkUtils.Constant;
 import com.example.android.popularmoviesapp.database.AppDatabase;
 import com.example.android.popularmoviesapp.database.FavoritesMovieDataDB;
 import com.example.android.popularmoviesapp.model.MovieData;
+import com.example.android.popularmoviesapp.model.TrailerData;
+import com.example.android.popularmoviesapp.model.TrailerDataList;
+import com.example.android.popularmoviesapp.service.DataController;
 import com.squareup.picasso.Picasso;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
+
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnTrailerDataChanged{
 
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String MARK_AS_FAVORITE = "MarkAsFavorite";
@@ -50,6 +56,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private boolean mMarkAsFavorite = false;
     private FavoritesMovieDataDB mMovieData = null;
+
+    private List<TrailerData> mTrailerData = new ArrayList<>();
 
     private static int LIST_OF_TRAILERS = 3;
     private TrailerAdapter mTrailerAdapter;
@@ -76,12 +84,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayout.VERTICAL);
-        mTrailerRecyclerView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mTrailerRecyclerView.setLayoutManager(layoutManager);
         mTrailerRecyclerView.setHasFixedSize(true);
         mTrailerRecyclerView.setNestedScrollingEnabled(false);
-        mTrailerAdapter = new TrailerAdapter(LIST_OF_TRAILERS);
+        mTrailerAdapter = new TrailerAdapter();
         mTrailerRecyclerView.setAdapter(mTrailerAdapter);
 
         mReviewRecycleView = (RecyclerView) findViewById(R.id.rv_reviews);
@@ -106,6 +114,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }else {
             checkIfMarkedAsFavoriteInDB();
         }
+
+        DataController dataController = new DataController(DetailActivity.this);
+        dataController.start();
     }
 
     private void populateDatainUI(MovieData movieData){
@@ -217,5 +228,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(MARK_AS_FAVORITE, mMarkAsFavorite);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void OnTrailerDataChanged(List<TrailerData> trailerData) {
+        if(trailerData != null && trailerData.size() != 0){
+            mTrailerData.addAll(trailerData);
+            mTrailerAdapter.setTrailerDataChanged(mTrailerData);
+        }
     }
 }
