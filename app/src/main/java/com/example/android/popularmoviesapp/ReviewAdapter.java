@@ -8,12 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.popularmoviesapp.model.ReviewsData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
-    private int mReviewItems;
+    private List<ReviewsData> mReviewDataList = new ArrayList<>();
 
-    public ReviewAdapter(int noOfReviews){
-        mReviewItems = noOfReviews;
+    public ReviewAdapter(List<ReviewsData> reviewsData){
+        mReviewDataList.addAll(reviewsData);
     }
 
     @NonNull
@@ -36,7 +41,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public int getItemCount() {
-        return mReviewItems;
+        if (null == mReviewDataList) return 0;
+        return mReviewDataList.size();
     }
 
 
@@ -53,7 +59,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         }
 
         void bind(int listIndex){
-            mReviewAuthorTextView.setText(String.valueOf(listIndex));
+            String author =  mReviewDataList.get(listIndex).getAuthor();
+            mReviewAuthorTextView.setText(author);
+
+            String content = mReviewDataList.get(listIndex).getContent();
+            mReviewDescriptionTextView.setText(content);
         }
     }
 }

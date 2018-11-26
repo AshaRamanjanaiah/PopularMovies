@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.android.popularmoviesapp.DetailActivity;
 import com.example.android.popularmoviesapp.NetworkUtils.Constant;
 import com.example.android.popularmoviesapp.OnTrailerDataChanged;
+import com.example.android.popularmoviesapp.model.ReviewsDataList;
 import com.example.android.popularmoviesapp.model.TrailerData;
 import com.example.android.popularmoviesapp.model.TrailerDataList;
 import com.google.gson.Gson;
@@ -18,41 +19,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DataController implements Callback<TrailerDataList> {
+public class TrailerDataController implements Callback<TrailerDataList> {
 
-    private static final String TAG = DataController.class.getSimpleName();
-
-    private static final String BASE_URL = "http://api.themoviedb.org/";
+    private static final String TAG = TrailerDataController.class.getSimpleName();
 
     private OnTrailerDataChanged trailerDataChangeListener;
 
-    public DataController(OnTrailerDataChanged onTrailerDataChanged){
+    public TrailerDataController(OnTrailerDataChanged onTrailerDataChanged){
         trailerDataChangeListener = onTrailerDataChanged;
-    }
-
-
-    public void start(){
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        MoviesAPI moviesAPI = retrofit.create(MoviesAPI.class);
-
-        Call<TrailerDataList> call = moviesAPI.getTrailers(Constant.api_value);
-        call.enqueue(this);
     }
 
     @Override
     public void onResponse(Call<TrailerDataList> call, Response<TrailerDataList> response) {
         if(response.isSuccessful()){
-            //   List<TrailerData> trailerDataList = response.body();
-            //  TrailerData data = trailerDataList.get(0);
-            // String name = data.getTrailerTitle();
 
             Log.d(TAG, response.body().toString());
 
@@ -60,9 +39,9 @@ public class DataController implements Callback<TrailerDataList> {
 
             trailerDataChangeListener.OnTrailerDataChanged(trailerDataList.getTrailersData());
 
-            Log.d(TAG, "response successful");
+            Log.d(TAG, "Successfully got Trailers data");
         }else{
-            Log.d(TAG, "response failed");
+            Log.d(TAG, "Failed to get response");
             Log.d(TAG, String.valueOf(response.errorBody()));
         }
     }

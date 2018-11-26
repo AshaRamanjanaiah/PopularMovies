@@ -21,7 +21,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     private List<TrailerData> mTrailerDataList = new ArrayList<>();
 
-        public TrailerAdapter(){ }
+        public TrailerAdapter(List<TrailerData> trailerDataList){
+            mTrailerDataList.addAll(trailerDataList);
+        }
 
     @NonNull
     @Override
@@ -60,8 +62,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             mTrailerIcon = (ImageView) itemView.findViewById(R.id.iv_trailer_icon);
             mTrailerTitle = (TextView) itemView.findViewById(R.id.tv_trailer_title);
 
-
-
         }
 
         void bind(int listIndex){
@@ -70,10 +70,5 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
             String key = mTrailerDataList.get(listIndex).getKey();
         }
-    }
-
-    public void setTrailerDataChanged(List<TrailerData> trailerDataList){
-            mTrailerDataList.addAll(trailerDataList);
-            notifyDataSetChanged();
     }
 }

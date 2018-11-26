@@ -25,18 +25,28 @@ import com.example.android.popularmoviesapp.NetworkUtils.Constant;
 import com.example.android.popularmoviesapp.database.AppDatabase;
 import com.example.android.popularmoviesapp.database.FavoritesMovieDataDB;
 import com.example.android.popularmoviesapp.model.MovieData;
+import com.example.android.popularmoviesapp.model.ReviewsData;
 import com.example.android.popularmoviesapp.model.TrailerData;
 import com.example.android.popularmoviesapp.model.TrailerDataList;
-import com.example.android.popularmoviesapp.service.DataController;
+import com.example.android.popularmoviesapp.service.ReviewsDataController;
+import com.example.android.popularmoviesapp.service.TrailerDataController;
+import com.example.android.popularmoviesapp.service.MoviesAPI;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnTrailerDataChanged{
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnTrailerDataChanged, OnReviewsDataChanged{
 
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String MARK_AS_FAVORITE = "MarkAsFavorite";
+
+    private static final String BASE_URL = "http://api.themoviedb.org/";
 
     private TextView mTitleTextview;
     private ImageView mThumbnailImageview;
@@ -52,12 +62,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private String mImageThumbnail;
     private int mMovieId;
 
+    MoviesAPI moviesAPI;
+
     private AppDatabase appDatabase;
 
     private boolean mMarkAsFavorite = false;
     private FavoritesMovieDataDB mMovieData = null;
 
     private List<TrailerData> mTrailerData = new ArrayList<>();
+
+    private List<ReviewsData> mReviewsData = new ArrayList<>();
 
     private static int LIST_OF_TRAILERS = 3;
     private TrailerAdapter mTrailerAdapter;
@@ -89,7 +103,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mTrailerRecyclerView.setLayoutManager(layoutManager);
         mTrailerRecyclerView.setHasFixedSize(true);
         mTrailerRecyclerView.setNestedScrollingEnabled(false);
-        mTrailerAdapter = new TrailerAdapter();
+        mTrailerAdapter = new TrailerAdapter(mTrailerData);
         mTrailerRecyclerView.setAdapter(mTrailerAdapter);
 
         mReviewRecycleView = (RecyclerView) findViewById(R.id.rv_reviews);
@@ -99,7 +113,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mReviewRecycleView.setLayoutManager(linearLayoutManagerReview);
         mReviewRecycleView.setHasFixedSize(true);
         mReviewRecycleView.setNestedScrollingEnabled(false);
-        mReviewAdapter = new ReviewAdapter(LIST_OF_REVIEWS);
+        mReviewAdapter = new ReviewAdapter(mReviewsData);
         mReviewRecycleView.setAdapter(mReviewAdapter);
 
 
@@ -115,8 +129,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             checkIfMarkedAsFavoriteInDB();
         }
 
-        DataController dataController = new DataController(DetailActivity.this);
-        dataController.start();
+        createMovieAPI();
+        moviesAPI.getTrailers(mMovieId, Constant.api_value).enqueue(new TrailerDataController(this));
+        moviesAPI.getReviews(mMovieId, Constant.api_value).enqueue(new ReviewsDataController(this));
     }
 
     private void populateDatainUI(MovieData movieData){
@@ -234,7 +249,28 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public void OnTrailerDataChanged(List<TrailerData> trailerData) {
         if(trailerData != null && trailerData.size() != 0){
             mTrailerData.addAll(trailerData);
-            mTrailerAdapter.setTrailerDataChanged(mTrailerData);
+            mTrailerRecyclerView.setAdapter(new TrailerAdapter(mTrailerData));
+        }
+    }
+
+    public void createMovieAPI(){
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            moviesAPI = retrofit.create(MoviesAPI.class);
+    }
+
+    @Override
+    public void OnReviewDataChanged(List<ReviewsData> reviewsData) {
+        if(reviewsData != null && reviewsData.size() != 0){
+            mReviewsData.addAll(reviewsData);
+            mReviewRecycleView.setAdapter(new ReviewAdapter(mReviewsData));
         }
     }
 }
