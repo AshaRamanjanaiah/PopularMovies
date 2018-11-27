@@ -7,4 +7,5 @@
     <color name="textColor">#FFFFFF</color>
     <color name="buttonBackground">#4DB6AC</color>
     <color name="buttonTextColor">#757575</color>
+    <color name="viewLineColor">#757575</color>
 </resources>

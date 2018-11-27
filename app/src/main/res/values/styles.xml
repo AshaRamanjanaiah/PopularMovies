@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ActivitySubTitles">
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextInbold" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:color">@color/colorPrimary</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

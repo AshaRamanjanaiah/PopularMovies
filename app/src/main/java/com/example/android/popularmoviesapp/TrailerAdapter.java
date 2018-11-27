@@ -21,9 +21,16 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     private List<TrailerData> mTrailerDataList = new ArrayList<>();
 
-        public TrailerAdapter(List<TrailerData> trailerDataList){
+    final private ListItemClickListener listItemClickListener;
+
+        public TrailerAdapter(List<TrailerData> trailerDataList, ListItemClickListener listItemClickListener){
             mTrailerDataList.addAll(trailerDataList);
+            this.listItemClickListener = listItemClickListener;
         }
+
+        public interface ListItemClickListener{
+            void onListItemClick(String clickedItemIndex);
+    }
 
     @NonNull
     @Override
@@ -51,16 +58,17 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         return mTrailerDataList.size();
     }
 
-    class TrailerViewHolder extends RecyclerView.ViewHolder{
+    class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        ImageView mTrailerIcon;
-        TextView mTrailerTitle;
+        public final ImageView mTrailerIcon;
+        public final TextView mTrailerTitle;
 
         public TrailerViewHolder(View itemView) {
             super(itemView);
 
             mTrailerIcon = (ImageView) itemView.findViewById(R.id.iv_trailer_icon);
             mTrailerTitle = (TextView) itemView.findViewById(R.id.tv_trailer_title);
+            itemView.setOnClickListener(this);
 
         }
 
@@ -69,6 +77,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             mTrailerTitle.setText(name);
 
             String key = mTrailerDataList.get(listIndex).getKey();
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            listItemClickListener.onListItemClick(mTrailerDataList.get(clickedPosition).getKey());
         }
     }
 }

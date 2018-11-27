@@ -73,6 +73,19 @@
                 android:layout_margin="@dimen/layout_margin"
                 android:textSize="@dimen/review_textsize" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/viewLineColor"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/trailers"
+                style="@style/ActivitySubTitles"/>
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,12 +93,48 @@
                 tools:listitem="@layout/trailer_list_item">
             </android.support.v7.widget.RecyclerView>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_share_trailer"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="@dimen/layout_margin_bottom"
+                android:text="@string/share_trailer"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/share_trailer_textsize"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/viewLineColor"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reviews"
+                style="@style/ActivitySubTitles"/>
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_reviews"
                 tools:listitem="@layout/review_list_item">
             </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_reviews"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                android:id="@+id/tv_no_reviews"/>
 
         </LinearLayout>
 

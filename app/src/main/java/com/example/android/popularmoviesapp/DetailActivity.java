@@ -7,6 +7,7 @@ package com.example.android.popularmoviesapp;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import com.example.android.popularmoviesapp.database.FavoritesMovieDataDB;
 import com.example.android.popularmoviesapp.model.MovieData;
 import com.example.android.popularmoviesapp.model.ReviewsData;
 import com.example.android.popularmoviesapp.model.TrailerData;
-import com.example.android.popularmoviesapp.model.TrailerDataList;
 import com.example.android.popularmoviesapp.service.ReviewsDataController;
 import com.example.android.popularmoviesapp.service.TrailerDataController;
 import com.example.android.popularmoviesapp.service.MoviesAPI;
@@ -41,12 +41,14 @@ import java.util.List;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnTrailerDataChanged, OnReviewsDataChanged{
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnTrailerDataChanged, OnReviewsDataChanged, TrailerAdapter.ListItemClickListener{
 
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String MARK_AS_FAVORITE = "MarkAsFavorite";
 
     private static final String BASE_URL = "http://api.themoviedb.org/";
+
+    private static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=";
 
     private TextView mTitleTextview;
     private ImageView mThumbnailImageview;
@@ -54,6 +56,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private TextView mVoteAverageTextview;
     private TextView mReviewTextview;
     private Button mMarkAsFavoriteButton;
+
+    private TextView mNoReviewsTextview;
+    private TextView mShareTrailerTextview;
 
     private String mMovieTitle;
     private String mMovieReleaseDate;
@@ -73,11 +78,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private List<ReviewsData> mReviewsData = new ArrayList<>();
 
-    private static int LIST_OF_TRAILERS = 3;
+    private String mFirstTrailerKey = "";
+
     private TrailerAdapter mTrailerAdapter;
     private RecyclerView mTrailerRecyclerView;
 
-    private static int LIST_OF_REVIEWS = 3;
     private ReviewAdapter mReviewAdapter;
     private RecyclerView mReviewRecycleView;
 
@@ -103,7 +108,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mTrailerRecyclerView.setLayoutManager(layoutManager);
         mTrailerRecyclerView.setHasFixedSize(true);
         mTrailerRecyclerView.setNestedScrollingEnabled(false);
-        mTrailerAdapter = new TrailerAdapter(mTrailerData);
+        mTrailerAdapter = new TrailerAdapter(mTrailerData, this);
         mTrailerRecyclerView.setAdapter(mTrailerAdapter);
 
         mReviewRecycleView = (RecyclerView) findViewById(R.id.rv_reviews);
@@ -115,6 +120,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mReviewRecycleView.setNestedScrollingEnabled(false);
         mReviewAdapter = new ReviewAdapter(mReviewsData);
         mReviewRecycleView.setAdapter(mReviewAdapter);
+
+        mNoReviewsTextview = (TextView) findViewById(R.id.tv_no_reviews);
+        mShareTrailerTextview = (TextView) findViewById(R.id.tv_share_trailer);
+        mShareTrailerTextview.setOnClickListener(this);
 
 
         Intent intent = getIntent();
@@ -183,6 +192,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     removeMovieFromDB();
                 }
                 break;
+            case R.id.tv_share_trailer:
+                shareTrailerURL();
+                break;
                 default:
                     Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
         }
@@ -245,11 +257,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         super.onSaveInstanceState(outState);
     }
 
+    public void shareTrailerURL(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, YOUTUBE_VIDEO_URL+mFirstTrailerKey);
+        sendIntent.setType("text/plain");
+        if(sendIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_trailer)));
+        }
+    }
+
     @Override
     public void OnTrailerDataChanged(List<TrailerData> trailerData) {
         if(trailerData != null && trailerData.size() != 0){
             mTrailerData.addAll(trailerData);
-            mTrailerRecyclerView.setAdapter(new TrailerAdapter(mTrailerData));
+            mFirstTrailerKey = trailerData.get(0).getKey();
+            mTrailerRecyclerView.setAdapter(new TrailerAdapter(mTrailerData, this));
         }
     }
 
@@ -271,6 +294,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if(reviewsData != null && reviewsData.size() != 0){
             mReviewsData.addAll(reviewsData);
             mReviewRecycleView.setAdapter(new ReviewAdapter(mReviewsData));
+        }else {
+            mNoReviewsTextview.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onListItemClick(String clickedItemKey) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_VIDEO_URL + clickedItemKey));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 }

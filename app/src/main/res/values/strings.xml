@@ -6,4 +6,11 @@
     <string name="mark_as_favorite">+ MARK AS FAVORITE</string>
     <string name="unmark_as_favorite">- UNFAVORITE MOVIE</string>
     <string name="thumbnail_image">Thumbnail Image</string>
+    <string name="share_this_link">Share Trailer</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+    <string name="tailer_icon">Trailer icon</string>
+    <string name="favorite_list_is_empty">No movies added to your favorite list.</string>
+    <string name="no_reviews">There are no reviews on this movie.</string>
+    <string name="share_trailer">Share Trailer</string>
 </resources>

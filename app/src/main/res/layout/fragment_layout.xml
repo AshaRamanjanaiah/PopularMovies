@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:columnWidth="@dimen/imagethumbnail_width"
-        android:numColumns="auto_fit"
-        tools:context=".MainActivityFragment"
-        android:id="@+id/gv_movieThumbnl"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:columnWidth="@dimen/imagethumbnail_width"
+            android:numColumns="auto_fit"
+            tools:context=".MainActivityFragment"
+            android:id="@+id/gv_movieThumbnl"
+            android:layout_gravity="center"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp">
+        </GridView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_list_is_empty"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp">
-    </GridView>
+        android:visibility="gone"
+        android:id="@+id/tv_empty_favorite_list"
+        android:paddingTop="25dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
 </LinearLayout>

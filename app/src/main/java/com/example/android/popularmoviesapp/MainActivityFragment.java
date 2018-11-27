@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 
 import com.example.android.popularmoviesapp.NetworkUtils.Constant;
@@ -32,6 +33,8 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
     private static final String TAG = MainActivityFragment.class.getSimpleName();
 
     private ImageAdapter imageAdapter;
+
+    private TextView mEmptyFavoriteListTextView;
 
     private ArrayList<MovieData> movieDataArrayList = new ArrayList<>();
 
@@ -74,17 +77,22 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
     }
 
     public void fetchLatestDataFromDB(){
-        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        final MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.getMovieInfo().observe(this, new Observer<List<FavoritesMovieDataDB>>() {
             @Override
             public void onChanged(@Nullable List<FavoritesMovieDataDB> favoritesMovieDataDBS) {
-                Log.d(TAG, "Updating movies from LiveData in viewModel");
+                if(favoritesMovieDataDBS.size() == 0){
+                    Log.d(TAG, "Favorites List is empty");
+                    mEmptyFavoriteListTextView.setVisibility(View.VISIBLE);
+                }
+                    Log.d(TAG, "Updating movies from LiveData in viewModel");
                     for (FavoritesMovieDataDB movieData : favoritesMovieDataDBS) {
                         movieDataArrayList.add(new MovieData(movieData.getTitle(), movieData.getMovieVoteAverage(),
                                 movieData.getMovieReleaseDate(), movieData.getMovieOverview(), movieData.getImageThumbnail(), movieData.getMovieId()));
                     }
                     imageAdapter.notifyDataSetChanged();
                     sortBy = Constant.FAVORITES;
+
             }
         });
     }
@@ -102,6 +110,7 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
         View rootView = inflater.inflate(R.layout.fragment_layout, container, false);
 
         imageAdapter = new ImageAdapter(getActivity(), 0, movieDataArrayList);
+        mEmptyFavoriteListTextView = (TextView) rootView.findViewById(R.id.tv_empty_favorite_list);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gv_movieThumbnl);
         gridView.setAdapter(imageAdapter);
