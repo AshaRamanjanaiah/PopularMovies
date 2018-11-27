@@ -60,11 +60,11 @@ In stage 2 of this project:
 
 1. Android architecture components(Room, LiveData, ViewModel):
 
-Room - Database is implemented using Room to store Favorite movies. 
+Database is implemented using Room to store Favorite movies. 
 
-LiveData -  Database is not re-queried unnecessarily. LiveData is used to observe changes in the database and update the UI accordingly.
+Database is not re-queried unnecessarily. LiveData is used to observe changes in the database and update the UI accordingly.
 
-ViewModel - Database is not re-queried unnecessarily after rotation. Cached LiveData from ViewModel is used instead.
+Database is not re-queried unnecessarily after rotation. Cached LiveData from ViewModel is used instead.
 
 2. Retrofit 
 
