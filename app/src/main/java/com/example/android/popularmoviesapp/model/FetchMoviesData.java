@@ -21,11 +21,11 @@ public class FetchMoviesData extends AsyncTask<String, Void, List<MovieData>> {
 
     private final OnTaskCompleted taskCompleted;
 
-    private final Context context;
+    private final boolean isNetAvailable;
 
-    public FetchMoviesData(OnTaskCompleted taskCompleted, Context context){
+    public FetchMoviesData(OnTaskCompleted taskCompleted, boolean isNetAvailable){
         this.taskCompleted = taskCompleted;
-        this.context = context;
+        this.isNetAvailable = isNetAvailable;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FetchMoviesData extends AsyncTask<String, Void, List<MovieData>> {
         String sortBy = strings[0];
 
         URL popularMovieRequestUrl = NetworkUtils.buildURL(sortBy);
-        if(isNetAvailable(context)){
+        if(isNetAvailable){
 
             try {
                 String movieResponse = NetworkUtils.getResponseFromHttpUrl(popularMovieRequestUrl);
@@ -62,21 +62,6 @@ public class FetchMoviesData extends AsyncTask<String, Void, List<MovieData>> {
         } else {
             taskCompleted.onTaskCompleted(null);
         }
-    }
-
-    private Boolean isNetAvailable(Context con) {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager!= null && connectivityManager.getActiveNetworkInfo() != null
-                    && connectivityManager.getActiveNetworkInfo().isAvailable()
-                    && connectivityManager.getActiveNetworkInfo().isConnected()) {
-                Log.v(TAG, "Internet Connection Present");
-                return true;
-            } else {
-                Log.v(TAG, "Internet Connection Not Present");
-                return false;
-            }
-
     }
 
 }

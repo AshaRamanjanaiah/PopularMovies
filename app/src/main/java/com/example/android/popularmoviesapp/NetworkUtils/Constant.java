@@ -36,4 +36,6 @@ public class Constant {
     public final static String MOVIE_INFO = "Moviesinfo";
 
     public final static String FAVORITES = "favorites";
+
+    public final static String POSITION = "position";
 }

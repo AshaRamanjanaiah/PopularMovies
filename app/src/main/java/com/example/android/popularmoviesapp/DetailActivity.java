@@ -234,6 +234,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             public void onChanged(@Nullable FavoritesMovieDataDB favoritesMovieData) {
                 Log.d(TAG, "OnChange method is triggered");
                 mMovieData = favoritesMovieData;
+
                 if(mMovieData!= null) {
                     mMarkAsFavorite = favoritesMovieData.isMarkedAsFavorite();
                 }

@@ -20,6 +20,8 @@ public final class NetworkUtils {
 
     private static String MOVIEDB_BASE_URL = Constant.MOVIEDB_URL;
 
+    private NetworkUtils(){ }
+
     public static URL buildURL(String sortBy){
         MOVIEDB_BASE_URL = getMoviedbBaseUrl(sortBy);
         Uri buildUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()

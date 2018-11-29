@@ -5,6 +5,8 @@ package com.example.android.popularmoviesapp;
  */
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
@@ -40,6 +42,10 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
 
     private String sortBy = Constant.SORTBY_BASE;
 
+    private GridView mGridView;
+
+    private int mCurrentPosition = 0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +72,16 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
         } else {
             Log.v(TAG, "onSavedInstanceState has data");
             movieDataArrayList = savedInstanceState.getParcelableArrayList(Constant.MOVIE_INFO);
+            if(savedInstanceState.containsKey(Constant.POSITION)){
+                mCurrentPosition = savedInstanceState.getInt(Constant.POSITION);
+            }
         }
 
     }
 
     public void fetchDataOverNetwork(String sortBy){
         Log.v(TAG, "Fetching data from network");
-        FetchMoviesData fetchMoviesData = new FetchMoviesData(MainActivityFragment.this, getActivity());
+        FetchMoviesData fetchMoviesData = new FetchMoviesData(this, isNetAvailable());
         fetchMoviesData.execute(sortBy);
     }
 
@@ -85,15 +94,14 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
                     Log.d(TAG, "Favorites List is empty");
                     mEmptyFavoriteListTextView.setVisibility(View.VISIBLE);
                 }
-                    Log.d(TAG, "Updating movies from LiveData in viewModel");
-                    for (FavoritesMovieDataDB movieData : favoritesMovieDataDBS) {
-                        movieDataArrayList.add(new MovieData(movieData.getTitle(), movieData.getMovieVoteAverage(),
-                                movieData.getMovieReleaseDate(), movieData.getMovieOverview(), movieData.getImageThumbnail(), movieData.getMovieId()));
-                    }
+                movieDataArrayList.clear();
+                Log.d(TAG, "Updating movies from LiveData in viewModel");
+                for (FavoritesMovieDataDB movieData : favoritesMovieDataDBS) {
+                    movieDataArrayList.add(new MovieData(movieData.getTitle(), movieData.getMovieVoteAverage(),
+                            movieData.getMovieReleaseDate(), movieData.getMovieOverview(), movieData.getImageThumbnail(), movieData.getMovieId())); }
                     imageAdapter.notifyDataSetChanged();
                     sortBy = Constant.FAVORITES;
-
-            }
+                    }
         });
     }
 
@@ -101,6 +109,7 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(Constant.MOVIE_INFO, movieDataArrayList);
         outState.putString(Constant.SORTBY, sortBy);
+        outState.putInt(Constant.POSITION, mGridView.getFirstVisiblePosition());
         super.onSaveInstanceState(outState);
     }
 
@@ -112,10 +121,11 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
         imageAdapter = new ImageAdapter(getActivity(), 0, movieDataArrayList);
         mEmptyFavoriteListTextView = (TextView) rootView.findViewById(R.id.tv_empty_favorite_list);
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.gv_movieThumbnl);
-        gridView.setAdapter(imageAdapter);
+        mGridView = (GridView) rootView.findViewById(R.id.gv_movieThumbnl);
+        mGridView.setSelection(mCurrentPosition);
+        mGridView.setAdapter(imageAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieData movieData = imageAdapter.getItem(position);
@@ -146,6 +156,21 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("movieData", movieData);
         startActivity(intent);
+    }
+
+    private Boolean isNetAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager!= null && connectivityManager.getActiveNetworkInfo() != null
+                && connectivityManager.getActiveNetworkInfo().isAvailable()
+                && connectivityManager.getActiveNetworkInfo().isConnected()) {
+            Log.v(TAG, "Internet Connection Present");
+            return true;
+        } else {
+            Log.v(TAG, "Internet Connection Not Present");
+            return false;
+        }
+
     }
 
 }

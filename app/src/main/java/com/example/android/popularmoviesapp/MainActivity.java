@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Bundle bundle;
     private String sortBy = Constant.SORTBY_BASE;
-    private MainActivityFragment mainActivityFragment;
+    private MainActivityFragment mainActivityFragment = new MainActivityFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +27,15 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState != null && savedInstanceState.containsKey(Constant.SORTBY) ){
             sortBy = savedInstanceState.getString(Constant.SORTBY);
+        }else{
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.main_container, mainActivityFragment);
+            fragmentTransaction.commit();
         }
 
         bundle = new Bundle();
         bundle.putString(Constant.SORTBY, sortBy);
-        mainActivityFragment = new MainActivityFragment();
         mainActivityFragment.setArguments(bundle);
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_container, mainActivityFragment);
-        fragmentTransaction.commit();
-
     }
 
     @Override

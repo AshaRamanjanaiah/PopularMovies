@@ -75,9 +75,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="@dimen/divider_line_height"
                 android:background="@color/viewLineColor"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
                 android:layout_marginRight="16dp"/>
 
             <TextView
@@ -109,8 +109,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/viewLineColor"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_marginRight="@dimen/layout_margin_right"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -129,10 +129,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/no_reviews"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_marginTop="@dimen/layout_margin_top"
+                android:layout_marginRight="@dimen/layout_margin_right"
+                android:layout_marginBottom="@dimen/layout_margin_bottom"
                 android:visibility="gone"
                 android:id="@+id/tv_no_reviews"/>
 
