@@ -74,9 +74,10 @@ Database is not re-queried unnecessarily after rotation. Cached LiveData from Vi
 
 5. Executors
 
-## To have a quick look at how app looks, please click wiki tab of this project or use below link
+## This is how the App looks
 
-https://github.com/AshaRamanjanaiah/PopularMoviesApp/wiki
+![](2018_11_30_15_00_34%20(1).gif)
+
 
 ## How to run the app
 Add your own API key in gradle.properties and use BuildConfig property.
