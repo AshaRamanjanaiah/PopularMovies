@@ -7,15 +7,14 @@ Most of us can relate to kicking back on the couch and enjoying a movie with fri
  
 1. My app will present the user with a grid arrangement of movie posters upon launch.
 
-2. App allows user to change sort order via a setting menu. When a user changes the sort criteria (most popular, highest rated, and favorites) the main view gets updated accordingly.
+2. Allows user to change sort order via a setting menu. When sort criteria (most popular, highest rated, and favorites) is changed the main view gets updated accordingly.
 
 3. When the "favorites" setting option is selected, the main view displays the entire favorites collection.
 
-4. App allows the user to tap on a movie poster and transition to a details screen with additional information such as
-original title, movie poster image thumbnail, A plot synopsis (called overview in the api), user rating (called vote_average in the api)
-and release date
+4. Allows the user to tap on a movie poster and transition to a details screen with additional information such as
+original title, movie poster, image thumbnail, A plot synopsis (called overview in the api), user rating (called vote_average in the api) and release date
 
-5. App will fetch trailers and reviews by making a network request.
+5. App will fetch trailers and reviews by making a network request and displays data in RecyclerView.
 
 6. When a trailer is selected, app launchs the trailer in YouTube.
 
